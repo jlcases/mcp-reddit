@@ -3,8 +3,24 @@ Main entry point for the Reddit Content API
 """
 import logging
 import sys
+import traceback
+import os
 
-from mcp_reddit.reddit_fetcher import mcp, get_trending_posts, analyze_reddit_discussion, create_reddit_post, add_reddit_comment, vote_on_reddit_content
+# Añadir la raíz del proyecto a sys.path para priorizar los módulos locales
+project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+src_root = os.path.join(project_root, 'src')
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+if src_root not in sys.path:
+    sys.path.insert(0, src_root)
+
+# Importar reddit_fetcher de forma más robusta - SOLO importamos mcp
+try:
+    import mcp_reddit.reddit_fetcher
+    mcp = mcp_reddit.reddit_fetcher.mcp
+except ImportError as e:
+    print(f"FATAL: No se pudo importar mcp_reddit.reddit_fetcher: {e}", file=sys.stderr)
+    sys.exit(1)
 
 # Configure logging to stdout
 logging.basicConfig(
@@ -16,12 +32,21 @@ logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     logger.info("Starting Reddit Content API server...")
-    logger.info("Available tools should include:")
-    logger.info("1. fetch_reddit_hot_threads (alias for get_trending_posts)")
-    logger.info("2. fetch_reddit_post_content (alias for analyze_reddit_discussion)")
-    logger.info("3. create_reddit_post")
-    logger.info("4. add_reddit_comment")
-    logger.info("5. vote_on_reddit_content")
+    
+    # Función para listar las herramientas registradas
+    def list_all_registered_tools():
+        logger.info("Listing registered tools...")
+        tool_manager = getattr(mcp, "_tool_manager", None)
+        if tool_manager:
+            all_tools = tool_manager.list_tools()
+            logger.info(f"Total registered tools: {len(all_tools)}")
+            for i, tool in enumerate(all_tools):
+                logger.info(f"Tool {i+1}: NAME='{tool.name}', DESC='{tool.description}'")
+        else:
+            logger.error("Tool manager not found in MCP instance")
+    
+    # Listar herramientas
+    list_all_registered_tools()
     
     try:
         # Start the server
