@@ -1,5 +1,8 @@
 # Reddit Content API - Setup and Usage Guide
 
+[![GitHub stars](https://img.shields.io/github/stars/jlcases/mcp-reddit?style=social)](https://github.com/jlcases/mcp-reddit/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jlcases/mcp-reddit?style=social)](https://github.com/jlcases/mcp-reddit/network/members)
+
 This project provides MCP (Model Context Protocol) tools for interacting with Reddit through Claude and Cursor.
 
 ## Features
@@ -198,3 +201,14 @@ If you find issues or have improvements, please create an issue or submit a pull
 ## License
 
 [MIT](LICENSE)
+
+## Support This Project
+
+If you find this project useful in your work or research, please consider:
+
+- ⭐ Starring the repository to show your support
+- 🔄 Following the repository for updates on new features and improvements
+- 🐛 Opening issues for bugs or feature requests
+- 🛠️ Contributing with pull requests if you have improvements to share
+
+Your support helps make this project better for everyone!
